@@ -4,8 +4,7 @@ const taskSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: [true, "Task title required"],
-      trim: true,
+      required: true,
     },
 
     project: {
@@ -25,7 +24,9 @@ const taskSchema = new mongoose.Schema(
       default: "todo",
     },
 
-    dueDate: Date,
+    dueDate: {
+      type: Date,
+    },
   },
   { timestamps: true }
 );
