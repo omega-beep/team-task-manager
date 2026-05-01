@@ -5,30 +5,36 @@ require("dotenv").config();
 
 const app = express();
 
-app.use(cors({
-  origin: "*",
-}));
+
+app.use(
+  cors({
+    origin: ["http://localhost:3000"], // your frontend
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 
 // routes
 const taskRoutes = require("./routes/taskRoutes");
 const authRoutes = require("./routes/authRoutes");
-const projectRoutes = require("./routes/projectRoutes"); // <-- ADD THIS
+const projectRoutes = require("./routes/projectRoutes");
 
 app.use("/api/tasks", taskRoutes);
 app.use("/api/auth", authRoutes);
-app.use("/api/projects", projectRoutes); // <-- ADD THIS
+app.use("/api/projects", projectRoutes);
 
 // test route
 app.get("/", (req, res) => {
-  res.send("API is running...");
+  res.send("API running");
 });
 
 // DB
-mongoose.connect(process.env.MONGO_URI)
+mongoose
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
+  .catch((err) => console.log(err));
 
 // server
 const PORT = process.env.PORT || 8080;
