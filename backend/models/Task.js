@@ -4,18 +4,28 @@ const taskSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: true,
+      required: [true, "Task title required"],
+      trim: true,
     },
+
     project: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Project",
       required: true,
     },
+
+    assignedTo: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+
     status: {
       type: String,
-      enum: ["todo", "inprogress", "done"], // FIXED
+      enum: ["todo", "inprogress", "done"],
       default: "todo",
     },
+
+    dueDate: Date,
   },
   { timestamps: true }
 );

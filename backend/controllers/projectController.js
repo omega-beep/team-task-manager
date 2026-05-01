@@ -1,9 +1,13 @@
 const Project = require("../models/Project");
 
-// CREATE PROJECT (admin only)
+// CREATE PROJECT
 const createProject = async (req, res) => {
   try {
     const { name, description, members } = req.body;
+
+    if (!name) {
+      return res.status(400).json({ message: "Project name required" });
+    }
 
     const project = await Project.create({
       name,
@@ -13,12 +17,12 @@ const createProject = async (req, res) => {
     });
 
     res.status(201).json(project);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };
 
-// GET ALL PROJECTS (user should see only their projects)
+// GET PROJECTS (ONLY USER RELATED)
 const getProjects = async (req, res) => {
   try {
     const projects = await Project.find({
@@ -29,8 +33,8 @@ const getProjects = async (req, res) => {
     }).populate("members", "name email");
 
     res.json(projects);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };
 

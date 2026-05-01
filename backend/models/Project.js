@@ -4,15 +4,16 @@ const projectSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: [true, "Project name required"],
     },
-    description: {
-      type: String,
-    },
+    description: String,
+
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
+
     members: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -20,9 +21,7 @@ const projectSchema = new mongoose.Schema(
       },
     ],
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Project", projectSchema);
