@@ -5,10 +5,6 @@ const createTask = async (req, res) => {
   try {
     const { title, project } = req.body;
 
-    if (!title || !project) {
-      return res.status(400).json({ message: "Title and project required" });
-    }
-
     const task = await Task.create({
       title,
       project,
@@ -40,10 +36,13 @@ const updateTaskStatus = async (req, res) => {
       return res.status(404).json({ message: "Task not found" });
     }
 
-    // status cycle
-    if (task.status === "todo") task.status = "inprogress";
-    else if (task.status === "inprogress") task.status = "done";
-    else task.status = "todo";
+    if (task.status === "todo") {
+      task.status = "inprogress";
+    } else if (task.status === "inprogress") {
+      task.status = "done";
+    } else {
+      task.status = "todo";
+    }
 
     await task.save();
 
