@@ -6,8 +6,9 @@ require("dotenv").config();
 const app = express();
 
 
-app.use(cors());
-app.options("*", cors());
+app.use(cors({
+  origin: "*",
+}));
 
 app.use(express.json());
 
@@ -20,15 +21,17 @@ app.use("/api/tasks", taskRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/projects", projectRoutes);
 
+// root
 app.get("/", (req, res) => {
   res.send("API running");
 });
 
-mongoose
-  .connect(process.env.MONGO_URI)
+// DB
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.log(err));
+  .catch(err => console.log(err));
 
+// server
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
