@@ -5,20 +5,20 @@ require("dotenv").config();
 
 const app = express();
 
-
 app.use(cors({
   origin: "*",
 }));
-
 
 app.use(express.json());
 
 // routes
 const taskRoutes = require("./routes/taskRoutes");
 const authRoutes = require("./routes/authRoutes");
+const projectRoutes = require("./routes/projectRoutes"); // <-- ADD THIS
 
 app.use("/api/tasks", taskRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/projects", projectRoutes); // <-- ADD THIS
 
 // test route
 app.get("/", (req, res) => {
